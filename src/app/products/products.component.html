@@ -1,38 +1,48 @@
-<div class="container" *ngIf="products">
-    <div>
-        <h3> {{title}}</h3>
-    </div>
+<div *ngIf="products">
+    <div><h3>{{title}}</h3></div>
     <div *ngFor="let p of products._embedded.products">
-        <div class="col-md-5">
-            <div class="panel panel-default">
-                <div class="panel-Heading"> {{p.name}} </div>
-                <div class="panel-body">
-                    <tr>
-                        <td>
-                            <img height="100" src="{{this.catService.host+'/photoProduct/'+p.id}}"/>
-                            <p>
-                                <button (click)="onEditImg(p)" >
-                                    <span class="glyphicon glyphicon-edit"></span>
-                                </button>
-                            </p>
-                            <p *ngIf="editImg==true && currentProduct==p ">
-                                <input type="file" (change)="onSelectedFile($event)">
-                                <button class="btn btn-success" (click)="uploadPhoto()">Upload</button>
-                                {{progress}}
-                            </p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>{{p.description}}</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>{{p.price | number:'0.2'}}</td>
-                    </tr>
-                </div>
-            </div>
+      <div class="col-md-4">
+      <div class="panel panel-default heigted">
+        <div class="panel-heading">{{p.name}}</div>
+        <div class="panel-body">
+          <img class="img-thumbnail img-rounded btn" (click)="onProductDetails(p)" [src]="this.catService.host+'/photoProduct/'+p.id+'?ts='+getTS()"/>
+          <div *ngIf="this.authService.isAdmin()">
+            <button (click)="onEditImg(p)">
+              <span class="glyphicon glyphicon-edit"></span>
+            </button>
+            <p *ngIf="editImg && currentProduct==p">
+              <input type="file" (change)="onSelectedFile($event)">
+              <button class="btn btn-success" (click)="uploadPhoto()">Upload</button>
+              {{progress}}
+            </p>
+          </div>
+          <div>
+            {{p.description}}
+          </div>
+          <div>
+            <label>Price : {{p.price|number:'0.00'}}</label>
+          </div>
+          <div>
+          
+            <span *ngIf="p.selected">
+                  <img src="assets/images/favorite.png" class="img-thumbnail img-circle" height="30">
+                </span>
+            
+          </div>
+          <div>
+            <form >
+              <label class="control-label">Quantité :</label>
+              <input type="number" name="quantity" [(ngModel)]="p.quantity" ngModel style="width: 40px" >
+              <button>
+                <img src="assets/images/caddy.png">
+              </button>
+            </form>
+          </div>
         </div>
+  
+  
+  
+      </div>
+      </div>
     </div>
-</div>
-
+  </div>

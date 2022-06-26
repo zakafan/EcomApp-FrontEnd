@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CatalogueService } from './catalogue.service';
+import { AuthenticationService } from './services/authentication.service';
 
 @Component({
   selector: 'app-root',
@@ -12,9 +13,10 @@ export class AppComponent implements OnInit {
   public categories:any;
   public currentCategorie:any;
 
-  constructor(private catService:CatalogueService, private router:Router){}
+  constructor(private catService:CatalogueService, private router:Router,private authService:AuthenticationService){}
 
   ngOnInit(): void {
+    this.authService.loadUser();
     this.getCategories();
 
   }
@@ -37,6 +39,11 @@ export class AppComponent implements OnInit {
     this.currentCategorie=undefined;
     this.router.navigateByUrl("/products/1/0");
 
+  }
+
+  onLogout(){
+    this.authService.logout();
+    this.router.navigateByUrl('/login');
   }
   
 }

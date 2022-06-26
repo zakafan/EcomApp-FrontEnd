@@ -2,6 +2,7 @@ import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { CatalogueService } from '../catalogue.service';
+import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
   selector: 'app-products',
@@ -18,9 +19,10 @@ export class ProductsComponent implements OnInit {
   currentFileUpload: any;
   currentTime: number =0;
   public title:string | undefined;
+  timestamp: number=0;
   constructor(
     public catService:CatalogueService,
-    public route:ActivatedRoute, private router:Router
+    public route:ActivatedRoute, private router:Router,public authService:AuthenticationService
     ) { }
 
   ngOnInit() {
@@ -83,7 +85,7 @@ export class ProductsComponent implements OnInit {
         //console.log(this.router.url);
         //this.getProducts(this.currentRequest);
         //this.refreshUpdatedProduct();
-        this.getProducts('/products/search/selectedProducts');
+        this.timestamp=Date.now();
       }
     },err=>{
       alert("Problème de chargement");
@@ -93,5 +95,15 @@ export class ProductsComponent implements OnInit {
 
     this.selectedFiles = undefined
   }
+
+  getTS(){
+    return this.timestamp;;
+  }
+
+  onProductDetails(p:any) {
+    this.router.navigateByUrl("/product/"+p.id);
+  }
+
+  
 
 }
